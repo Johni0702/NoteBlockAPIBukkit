@@ -24,9 +24,8 @@
 
         <dependency>
             <groupId>org.bukkit</groupId>
-            <artifactId>craftbukkit</artifactId>
-            <version>1.7.9-R0.2-SNAPSHOT</version>
-            <scope>provided</scope>
+            <artifactId>bukkit</artifactId>
+            <version>1.7.9-R0.2</version>
         </dependency>
 
     </dependencies>
