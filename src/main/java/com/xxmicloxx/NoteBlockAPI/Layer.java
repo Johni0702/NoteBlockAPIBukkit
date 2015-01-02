@@ -1,19 +1,31 @@
 package com.xxmicloxx.NoteBlockAPI;
 
 import java.util.HashMap;
+import java.util.Map;
 
 public class Layer {
 
-    private HashMap<Integer, Note> hashMap = new HashMap<Integer, Note>();
+    private Map<Integer, Note> map = new HashMap<>();
     private byte volume = 100;
     private String name = "";
 
+    @Deprecated
+    @SuppressWarnings("unchecked")
     public HashMap<Integer, Note> getHashMap() {
-        return hashMap;
+        return (HashMap) map;
     }
 
+    @Deprecated
     public void setHashMap(HashMap<Integer, Note> hashMap) {
-        this.hashMap = hashMap;
+        this.map = hashMap;
+    }
+
+    public Map<Integer, Note> getMap() {
+        return map;
+    }
+
+    public void setMap(Map<Integer, Note> map) {
+        this.map = map;
     }
 
     public String getName() {
@@ -25,11 +37,11 @@ public class Layer {
     }
 
     public Note getNote(int tick) {
-        return hashMap.get(tick);
+        return map.get(tick);
     }
 
     public void setNote(int tick, Note note) {
-        hashMap.put(tick, note);
+        map.put(tick, note);
     }
 
     public byte getVolume() {

@@ -1,51 +1,44 @@
 package com.xxmicloxx.NoteBlockAPI;
 
-import org.bukkit.Bukkit;
 import org.bukkit.entity.Player;
 import org.bukkit.plugin.java.JavaPlugin;
 
-import java.util.ArrayList;
-import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
+import java.util.WeakHashMap;
 
 public class NoteBlockPlayerMain extends JavaPlugin {
 
     public static NoteBlockPlayerMain plugin;
-    public HashMap<String, ArrayList<SongPlayer>> playingSongs = new HashMap<String, ArrayList<SongPlayer>>();
-    public HashMap<String, Byte> playerVolume = new HashMap<String, Byte>();
+    public Map<Player, List<SongPlayer>> playingSongs = new WeakHashMap<>();
+    public Map<Player, Byte> playerVolume = new WeakHashMap<>();
 
     public static boolean isReceivingSong(Player p) {
-        return ((plugin.playingSongs.get(p.getName()) != null) && (!plugin.playingSongs.get(p.getName()).isEmpty()));
+        List<SongPlayer> songs = plugin.playingSongs.get(p);
+        return songs != null && !songs.isEmpty();
     }
 
     public static void stopPlaying(Player p) {
-        if (plugin.playingSongs.get(p.getName()) == null) {
+        List<SongPlayer> songs = plugin.playingSongs.get(p);
+        if (songs == null) {
             return;
         }
-        for (SongPlayer s : plugin.playingSongs.get(p.getName())) {
+        for (SongPlayer s : songs) {
             s.removePlayer(p);
         }
     }
 
     public static void setPlayerVolume(Player p, byte volume) {
-        plugin.playerVolume.put(p.getName(), volume);
+        plugin.playerVolume.put(p, volume);
     }
 
     public static byte getPlayerVolume(Player p) {
-        Byte b = plugin.playerVolume.get(p.getName());
-        if (b == null) {
-            b = 100;
-            plugin.playerVolume.put(p.getName(), b);
-        }
-        return b;
+        Byte b = plugin.playerVolume.get(p);
+        return b == null ? 100 : b;
     }
 
     @Override
     public void onEnable() {
         plugin = this;
-    }
-
-    @Override
-    public void onDisable() {
-        Bukkit.getScheduler().cancelTasks(this);
     }
 }

@@ -1,5 +1,6 @@
 package com.xxmicloxx.NoteBlockAPI;
 
+import org.bukkit.Location;
 import org.bukkit.Material;
 import org.bukkit.block.Block;
 import org.bukkit.entity.Player;
@@ -30,23 +31,22 @@ public class NoteBlockSongPlayer extends SongPlayer {
         if (noteBlock.getType() != Material.NOTE_BLOCK) {
             return;
         }
-        if (!p.getWorld().getName().equals(noteBlock.getWorld().getName())) {
+        if (!p.getWorld().equals(noteBlock.getWorld())) {
             // not in same world
             return;
         }
+        Location loc = noteBlock.getLocation();
         byte playerVolume = NoteBlockPlayerMain.getPlayerVolume(p);
 
-        for (Layer l : song.getLayerHashMap().values()) {
+        for (Layer l : song.getLayerMap().values()) {
             Note note = l.getNote(tick);
             if (note == null) {
                 continue;
             }
-            p.playNote(noteBlock.getLocation(), Instrument.getBukkitInstrument(note.getInstrument()),
-                    new org.bukkit.Note(note.getKey() - 33));
-            p.playSound(noteBlock.getLocation(),
-                    Instrument.getInstrument(note.getInstrument()),
-                    (l.getVolume() * (int) volume * (int) playerVolume) / 1000000f,
-                    NotePitch.getPitch(note.getKey() - 33));
+            Instrument instrument = note.getInstrument();
+            float volume = l.getVolume() * this.volume * playerVolume / 1000000f;
+            p.playNote(loc, instrument.getBukkitInstrument(), new org.bukkit.Note(note.getKey() - 33));
+            p.playSound(loc, instrument.getSound(), volume, NotePitch.getPitch(note.getKey() - 33));
         }
     }
 }

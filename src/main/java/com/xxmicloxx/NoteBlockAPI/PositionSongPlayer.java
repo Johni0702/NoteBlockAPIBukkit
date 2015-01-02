@@ -21,21 +21,20 @@ public class PositionSongPlayer extends SongPlayer {
 
     @Override
     public void playTick(Player p, int tick) {
-        if (!p.getWorld().getName().equals(targetLocation.getWorld().getName())) {
+        if (!p.getWorld().equals(targetLocation.getWorld())) {
             // not in same world
             return;
         }
         byte playerVolume = NoteBlockPlayerMain.getPlayerVolume(p);
 
-        for (Layer l : song.getLayerHashMap().values()) {
+        for (Layer l : song.getLayerMap().values()) {
             Note note = l.getNote(tick);
             if (note == null) {
                 continue;
             }
-            p.playSound(targetLocation,
-                    Instrument.getInstrument(note.getInstrument()),
-                    (l.getVolume() * (int) volume * (int) playerVolume) / 1000000f,
-                    NotePitch.getPitch(note.getKey() - 33));
+            Instrument instrument = note.getInstrument();
+            float volume = l.getVolume() * this.volume * playerVolume / 1000000f;
+            p.playSound(targetLocation, instrument.getSound(), volume, NotePitch.getPitch(note.getKey() - 33));
         }
     }
 }

@@ -2,10 +2,11 @@ package com.xxmicloxx.NoteBlockAPI;
 
 import java.io.File;
 import java.util.HashMap;
+import java.util.Map;
 
 public class Song {
 
-    private HashMap<Integer, Layer> layerHashMap = new HashMap<Integer, Layer>();
+    private Map<Integer, Layer> layerMap = new HashMap<>();
     private short songHeight;
     private short length;
     private String title;
@@ -18,7 +19,7 @@ public class Song {
     public Song(Song other) {
         this.speed = other.getSpeed();
         delay = 20 / speed;
-        this.layerHashMap = other.getLayerHashMap();
+        this.layerMap = other.getLayerMap();
         this.songHeight = other.getSongHeight();
         this.length = other.getLength();
         this.title = other.getTitle();
@@ -27,12 +28,19 @@ public class Song {
         this.path = other.getPath();
     }
 
+    @Deprecated
     public Song(float speed, HashMap<Integer, Layer> layerHashMap,
+                short songHeight, final short length, String title, String author,
+                String description, File path) {
+        this(speed, (Map<Integer, Layer>) layerHashMap, songHeight, length, title, author, description, path);
+    }
+
+    public Song(float speed, Map<Integer, Layer> layerMap,
                 short songHeight, final short length, String title, String author,
                 String description, File path) {
         this.speed = speed;
         delay = 20 / speed;
-        this.layerHashMap = layerHashMap;
+        this.layerMap = layerMap;
         this.songHeight = songHeight;
         this.length = length;
         this.title = title;
@@ -41,8 +49,14 @@ public class Song {
         this.path = path;
     }
 
+    @Deprecated
+    @SuppressWarnings("unchecked")
     public HashMap<Integer, Layer> getLayerHashMap() {
-        return layerHashMap;
+        return (HashMap) layerMap;
+    }
+
+    public Map<Integer, Layer> getLayerMap() {
+        return layerMap;
     }
 
     public short getSongHeight() {

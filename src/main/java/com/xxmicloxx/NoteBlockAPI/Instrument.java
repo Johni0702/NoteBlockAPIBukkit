@@ -2,39 +2,35 @@ package com.xxmicloxx.NoteBlockAPI;
 
 import org.bukkit.Sound;
 
-public class Instrument {
+public enum Instrument {
+
+    PIANO(Sound.NOTE_PIANO, org.bukkit.Instrument.PIANO),
+    BASS_GUITAR(Sound.NOTE_BASS_GUITAR, org.bukkit.Instrument.BASS_GUITAR),
+    BASS_DRUM(Sound.NOTE_BASS_DRUM, org.bukkit.Instrument.BASS_DRUM),
+    SNARE_DRUM(Sound.NOTE_SNARE_DRUM, org.bukkit.Instrument.SNARE_DRUM),
+    STICKS(Sound.NOTE_STICKS, org.bukkit.Instrument.STICKS);
+
+    private final Sound sound;
+    private final org.bukkit.Instrument bukkitInstrument;
+
+    Instrument(Sound sound, org.bukkit.Instrument bukkitInstrument) {
+        this.sound = sound;
+        this.bukkitInstrument = bukkitInstrument;
+    }
+
+    public Sound getSound() {
+        return sound;
+    }
+
+    public org.bukkit.Instrument getBukkitInstrument() {
+        return bukkitInstrument;
+    }
 
     public static Sound getInstrument(byte instrument) {
-        switch (instrument) {
-            case 0:
-                return Sound.NOTE_PIANO;
-            case 1:
-                return Sound.NOTE_BASS_GUITAR;
-            case 2:
-                return Sound.NOTE_BASS_DRUM;
-            case 3:
-                return Sound.NOTE_SNARE_DRUM;
-            case 4:
-                return Sound.NOTE_STICKS;
-            default:
-                return Sound.NOTE_PIANO;
-        }
+        return Instrument.values()[instrument].getSound();
     }
 
     public static org.bukkit.Instrument getBukkitInstrument(byte instrument) {
-        switch (instrument) {
-            case 0:
-                return org.bukkit.Instrument.PIANO;
-            case 1:
-                return org.bukkit.Instrument.BASS_GUITAR;
-            case 2:
-                return org.bukkit.Instrument.BASS_DRUM;
-            case 3:
-                return org.bukkit.Instrument.SNARE_DRUM;
-            case 4:
-                return org.bukkit.Instrument.STICKS;
-            default:
-                return org.bukkit.Instrument.PIANO;
-        }
+        return Instrument.values()[instrument].getBukkitInstrument();
     }
 }
